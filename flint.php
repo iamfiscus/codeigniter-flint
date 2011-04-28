@@ -25,7 +25,7 @@ class Flint {
 	private $plural_name;
 	
 	// use mvc defaults
-	public $mvc = 'model,controller';
+	public $mvc = 'model,view,controller';
 	
 	public $views = 'index,view,create,edit,delete,_form';
 	
@@ -58,11 +58,18 @@ Copyright (c) 2011 Aaron Kuzemchak <http://kuzemchak.net/> and JD Fiscus <http:/
 License: MIT License <http://www.opensource.org/licenses/mit-license.php>
 
 USAGE:
-    php cigen.php --help
-    php cigen.php generate controller monkies
-    php cigen.php generate model [--datamapper] monkey
-    php cigen.php generate views monkies
-    php cigen.php generate mvc [--datamapper] monkey/monkies
+    php flint.php --help
+    php flint.php generate controller dictionaries
+    php flint.php generate [--datamapper] model dictionary
+    php flint.php generate views dictionaries
+    php flint.php generate [--datamapper] mvc dictionary [--plural=dictionaries]
+
+NOTE:
+    In the above examples, "dictionary" and "dictionaries" are NOT special keywords. These
+    simply represent the name of the controller/model/etc. that you are generating. So, if
+    you wanted a controller named "news" you would do so as follows:
+    
+    php flint.php generate controller news
 
 MVC:
     When generating a mvc, Cigen will create a controller with the plural
@@ -140,7 +147,10 @@ EOD;
 		if (file_exists($this->filepath)) {
 
 			// Confirmation Prompt
-			$message   =  "Are you sure you replace $filepath [Y/n]";
+			$pathinfo = pathinfo($this->filepath);
+			$pretty = basename($pathinfo['dirname']) . '/' . $pathinfo['basename'];
+			
+			$message   =  "Are you sure you replace $pretty? [Y/n]";
 			print $message;
 			$confirmation  = trim( fgets( STDIN ) );
 
@@ -220,22 +230,22 @@ class %1\$s extends CI_Controller {
 	
 	// index
 	public function index() {
-		\$this->load->view('$this->plural_name/index');
+		\$this->load->view('$this->name/index');
 	}
 	
 	// view
 	public function view(\$id) {
-		\$this->load->view('$this->plural_name/view');
+		\$this->load->view('$this->name/view');
 	}
 	
 	// create
 	public function create() {
-		\$this->load->view('$this->plural_name/create');
+		\$this->load->view('$this->name/create');
 	}
 	
 	// edit
 	public function edit(\$id) {
-		\$this->load->view('$this->plural_name/edit');
+		\$this->load->view('$this->name/edit');
 	}
 	
 	// delete
@@ -246,15 +256,17 @@ class %1\$s extends CI_Controller {
 }
 EOD;
 		}
+		// filename
+		$filename = ($this->datamapper) ? $this->plural_name : $this->name;
 		
 		// filepath 
-		$this->filepath = $this->wd."/application/controllers/{$this->plural_name}.php";
+		$this->filepath = $this->wd."/application/controllers/{$filename}.php";
 		
 		// file exists prompt
 		if (!$this->file_exits_prompt($this->plural_name)) {
 			$output = sprintf($template, ucfirst($this->plural_name), ucfirst($this->name));
 			file_put_contents($this->filepath, $output);
-			print("Created controller at application/controllers/{$this->plural_name}.php\n");
+			print("Created controller at application/controllers/{$filename}.php\n");
 			
 		}
 		
@@ -319,7 +331,7 @@ EOD;
 	
 	// generates views
 	private function generate_view() {
-		
+
 // View build
 $template['view'] = <<<EOD
 <?php
@@ -346,16 +358,16 @@ EOD;
 		// Create files for default veiws 
 		foreach (explode(',',$this->views) as $i) {
 			
-			//var_dump($this->wd."/application/views/$this->name");
-			//exit();
+			// Datamapper changes filename convention
+			$filename = ($this->datamapper) ? $this->plural_name : $this->name;
 			
 			// Create folder
-			if (!is_dir($this->wd."/application/views/$this->name")) {
-				mkdir($this->wd."/application/views/$this->name");
+			if (!is_dir($this->wd."/application/views/$filename")) {
+				mkdir($this->wd."/application/views/$filename");
 			}
 			
 			// file path
-			$this->filepath = $this->wd."/application/views/{$this->name}/$i.php";
+			$this->filepath = $this->wd."/application/views/{$filename}/$i.php";
 			
 			// file exists prompt
 			if (!$this->file_exits_prompt($i)) {
@@ -369,9 +381,9 @@ EOD;
 				}
 
 				
-				$output = sprintf($view, $this->name, $i);
+				$output = sprintf($view, $filename, $i);
 				file_put_contents($this->filepath, $output);
-				print("Created veiw at application/view/{$this->name}/$i\n");
+				print("Created veiw at application/view/{$filename}/$i.php \n");
 			}
 			
 		}
