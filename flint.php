@@ -193,24 +193,33 @@ class %1\$s extends CI_Controller {
 
 	// create
 	public function create() {
-		\$c = new %2\$s;
-		\$c->save(\$id);
+		if (\$this->input->post('submit')) {
+			\$c = new %2\$s;
+			\$c->save(\$id);
+		}
+
 
 		\$this->load->view('$this->plural_name/create');
 	}
 
 	// edit
 	public function edit(\$id) {
-		\$e = new %2\$s;
-		\$e->update(\$id);
+		if (\$this->input->post('submit')) {
+			\$e = new %2\$s;
+			\$e->update(\$id);
+		}
+		
 
 		\$this->load->view('$this->plural_name/edit');
 	}
 
 	// delete
 	public function delete(\$id) {
-		\$d = new %2\$s;
-		\$d->delete(\$id);
+		if (\$this->input->post('submit')) {
+			\$d = new %2\$s;
+			\$d->delete(\$id);
+		}
+		
 
 		\$this->load->view('$this->plural_name/delete');
 	}
@@ -342,7 +351,8 @@ EOD;
 $template['view_inc'] = <<<EOD
 <?php
 	
-	\$this->load->veiw("%1\$s/%2\$s.php");
+	\$this->load->view("%1\$s/_form.php");
+?>
 	
 EOD;
 
