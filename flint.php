@@ -92,22 +92,22 @@ EOD;
 		foreach ($this->argv as $k => $a) {
 			if (strpos($a,'--')===0) {
 				// check for help flag
-				if($a == '--help' || $this->argv < 4) {
+				if($a == '--help' || $this->argc < 4) {
 					$this->help();
 				}
 				
 				// check for datamapper flag
-				if($a == '--datamapper') {
+				elseif($a == '--datamapper') {
 					$this->datamapper = TRUE;
 				}
 				
 				// check for plural flag
-				if(preg_match("/^--plural=(.+)$/", $a, $matches)) {
+				elseif(preg_match("/^--plural=(.+)$/", $a, $matches)) {
 					$this->plural_name = strtolower($matches[1]);
 				}
 				
 				// check for mvc array flag
-				if(preg_match("/^--mvc=(.+)$/", $a, $matches)) {
+				elseif(preg_match("/^--mvc=(.+)$/", $a, $matches)) {
 					$this->mvc = strtolower($matches[1]);
 				}
 				
@@ -125,8 +125,6 @@ EOD;
 		$this->type = strtolower($this->argv[2]);
 		$this->name = strtolower($this->argv[3]);
 		$this->plural_name = ($this->plural_name) ? $this->plural_name : $this->name.'s';
-		
-		//var_dump($this);
 		
 	}
 	
@@ -177,18 +175,17 @@ class %1\$s extends CI_Controller {
 
 	// index
 	public function index() {
-		\$i = new %2\$s;
+		\$i = new %2\$s();
 		\$i->get();
 
-		\$this->load->view('$this->plural_name/index');
+		\$this->load->view('{$this->plural_name}/index');
 	}
 
 	// view
 	public function view(\$id) {
-		\$v = new %2\$s;
-		\$v->get_by_id(\$id);
+		\$v = new %2\$s(\$id);
 
-		\$this->load->view('$this->plural_name/view');
+		\$this->load->view('{$this->plural_name}/view');
 	}
 
 	// create
@@ -199,7 +196,7 @@ class %1\$s extends CI_Controller {
 		}
 
 
-		\$this->load->view('$this->plural_name/create');
+		\$this->load->view('{$this->plural_name}/create');
 	}
 
 	// edit
@@ -210,7 +207,7 @@ class %1\$s extends CI_Controller {
 		}
 		
 
-		\$this->load->view('$this->plural_name/edit');
+		\$this->load->view('{$this->plural_name}/edit');
 	}
 
 	// delete
