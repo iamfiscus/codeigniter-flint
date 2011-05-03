@@ -302,8 +302,8 @@ class %1\$s extends DataMapper {
 	);
 
 	// constructor
-	public function __construct() {
-		parent::__construct();
+	public function __construct(\$id = null) {
+		parent::__construct(\$id);
 	}
 
 }
