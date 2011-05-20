@@ -192,7 +192,7 @@ class %1\$s extends CI_Controller {
 	public function create() {
 		if (\$this->input->post('submit')) {
 			\$c = new %2\$s;
-			\$c->save(\$id);
+			\$c->save();
 		}
 
 
@@ -202,8 +202,8 @@ class %1\$s extends CI_Controller {
 	// edit
 	public function edit(\$id) {
 		if (\$this->input->post('submit')) {
-			\$e = new %2\$s;
-			\$e->update(\$id);
+			\$e = new %2\$s(\$id);
+			\$e->save();
 		}
 		
 
@@ -355,11 +355,20 @@ EOD;
 
 // View _form build
 $template['view_form'] = <<<EOD
-<form action="" method="post">
-	
+<?php if (\$errors): ?>
+	<div class="errors">
+		<ul>
+			<?php foreach (\$errors as \$e): ?>
+				<li><?php echo \$e ?></li>
+			<?php endforeach ?>
+		</ul>
+	</div>
+<?php endif ?>
+<?php echo form_open('',array('id'=>"")); ?>
+
 
 	<p><input type="submit" value="Continue &rarr;"></p>
-</form>
+<?php echo form_close(); ?>
 EOD;
 
 		// Create files for default veiws 
