@@ -167,6 +167,9 @@ EOD;
 <?php
 
 class %1\$s extends CI_Controller {
+	
+	// default variables
+	private \$data;
 
 	// constructor
 	public function __construct() {
@@ -228,6 +231,9 @@ EOD;
 <?php
 
 class %1\$s extends CI_Controller {
+	
+	// default variables
+	private \$data;
 	
 	// constructor
 	public function __construct() {
@@ -340,7 +346,6 @@ EOD;
 
 // View build
 $template['view'] = <<<EOD
-<?php
 
 EOD;
 
