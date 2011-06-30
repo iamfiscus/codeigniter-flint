@@ -77,7 +77,7 @@ NOTE:
     php flint.php generate controller news
 
 MVC:
-    When generating a mvc, Cigen will create a controller with the plural
+    When generating a mvc, Flint will create a controller with the plural
     name, a model with the singular name, and view files for index, create,
     edit, view, delete, and a form inside a folder with the plural name.
     
@@ -86,7 +86,30 @@ MVC:
 
 OPTIONS:
     --datamapper:
-        Use this to create a DataMapper model instead of a traditional one\n\n
+        Use this to create a DataMapperORM stucture instead of a traditional one\n
+		For CodeIgniter install: http://datamapper.wanwizard.eu/pages/download.html\n
+		For Spark install: http://getsparks.org/packages/DataMapper-ORM/versions/HEAD/show\n\n
+	--plural=:
+        Use this to define the plural of a word to be used, instead of the default\n 
+		which is appending 's'\n\n
+	--smarty:
+        Use this to create a view files that utilize Smarty Template\n
+		For CodeIgniter install: https://github.com/akuzemchak/smartyview\n
+		For Spark install: http://getsparks.org/packages/smartyview/versions/HEAD/show\n\n
+		
+FILES GENERATED:
+	[controller]
+		/application/controllers/[controller_name].php
+	[model]
+		/application/models/[model_name].php
+	[view]
+		/application/views/[view_name]/_form.[php/tpl]
+		/application/views/[view_name]/index.[php/tpl]
+		/application/views/[view_name]/create.[php/tpl]
+		/application/views/[view_name]/edit.[php/tpl]
+		/application/views/[view_name]/view.[php/tpl]
+		/application/views/[view_name]/delete.[php/tpl]
+		
 EOD;
 		print($output);
 		exit;
