@@ -405,9 +405,7 @@ $template['view'] = <<<EOD
 {extends 'layouts/master.tpl'}
 
 {block 'main_content'}
-	
-	{include '%1\$s/_form.tpl'}
-	
+		
 {/block}
 EOD;
 
@@ -416,6 +414,8 @@ $template['view_inc'] = <<<EOD
 {extends 'layouts/master.tpl'}
 
 {block 'main_content'}
+
+	{include '%1\$s/_form.tpl'}
 
 {/block}
 EOD;
@@ -453,7 +453,11 @@ if ($this->datamapper) {
 
 // View build
 $template['view'] = <<<EOD
+<?php \$this->load->view("layouts/header.php"); ?>
 
+	
+
+<?php \$this->load->view("layouts/footer.php"); ?>
 EOD;
 
 // View Form Include build
